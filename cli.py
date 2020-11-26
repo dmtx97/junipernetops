@@ -1,12 +1,11 @@
-from junipernetops.juniper import Juniper
+# from junipernetops.juniper import Juniper
+from netopsauto.juniper import Juniper
 import json
 import argparse
 import sys
 
 def audit_interfaces(switch, enabled_interfaces, interface_to_status):
-
     count = sum(1 for i in enabled_interfaces if i in interface_to_status and interface_to_status[i] == 'inactive')
-
     print("Number of enabled interfaces with port security for {} : {}\n".format(switch.host_name, count))
 
     interfaces = []
@@ -19,27 +18,23 @@ def audit_interfaces(switch, enabled_interfaces, interface_to_status):
 
 
 def switches_to_list():
-
-    switches = []
-
-    # CONSTANT list of omitted buildings
     SKIPPED_BUILDINGS = ['Townhomes', 'Horner Ballpark',]
 
+    switches = []
     with open('./data/input/switches.json', 'r') as f:
         data = json.loads(f.read())
     
         for key in data:
             for value in data[key]:
                 if value['host_name'] not in SKIPPED_BUILDINGS:
-                    
                     switch = Juniper(value['host_name'], value['host_address'], secrets.username, secrets.password)
                     switches.append(switch)
 
     return switches
 
 def output_audit():
-    output_json = {}
     swlist = switches_to_list()
+    output_json = {}
 
     for sw in swlist:
         try:
@@ -49,7 +44,6 @@ def output_audit():
             output_json[sw.host_name] = {}
             output_json[sw.host_name]['ipaddress'] = sw.host_address
             output_json[sw.host_name]['ports'] = audit_interfaces(sw, enabled_interfaces, interface_to_status)  
-    
         except:
             print("Could Not Connect To Device")
             pass

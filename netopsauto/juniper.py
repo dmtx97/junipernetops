@@ -9,6 +9,21 @@ import sys
 import re
 
 class Juniper:
+    """A class which implements Juniper Networks PyEZ module.
+
+    Initializes new instance of a Juniper device.
+
+    :param host_name: host name for Juniper device
+    :type host_name: str
+    :param host_address: host address for Juniper device
+    :type host_address: str
+    :param user: username for Juniper login
+    :type user: str
+    :param password: password for Juniper login
+    :type password: str
+    
+    """
+
     def __init__(self, host_name, host_address, user, password):
         self.host_address = host_address
         self.user = user
@@ -16,6 +31,12 @@ class Juniper:
         self.host_name = host_name
 
     def initialize_device(self):
+        """Initializes new instance of `jnpr.junos.device.Device <https://junos-pyez.readthedocs.io/en/2.5.1/jnpr.junos.html#module-jnpr.junos.device>`_.
+
+        Optionally call this function to utilize the PyEz Device instance directly, otherwise the associated functions provided by the **netopsauto.juniper.Juniper** class will initialize a Device object for you.
+
+        :return: `jnpr.junos.device.Device <https://junos-pyez.readthedocs.io/en/2.5.1/jnpr.junos.html#module-jnpr.junos.device>`_ 
+        """
         dev = Device(host = self.host_address, user = self.user, password = self.password)
         return dev
 
@@ -30,18 +51,15 @@ class Juniper:
         enabled_interfaces = []
         unchecked_interfaces = ['ae0', 'ae1', 'ae2', 'ae3', 'ae4', 'me0', 'vme']
         for line in cmd[1].splitlines():
-
             if "Enabled, Physical link is Down" in line:
                 val = line.split("Physical interface: ")[1]
                 val = val.split(", Enabled, Physical link is Down")[0]
-
-                if not val in unchecked_interfaces:
+                if val not in unchecked_interfaces:
                     enabled_interfaces.append(val + '.0')
 
         return enabled_interfaces
 
     def get_ethernet_switching_options(self):
-
         # Function returns ports with ethernet-switching-options and their status (active or inactive)
         dev = self.initialize_device()
         dev.open()
@@ -55,10 +73,8 @@ class Juniper:
 
         interface_to_status = {}
         for i in ethernet_options_interfaces:
-
             if 'inactive' not in i.attrib.keys():
                 interface_to_status[i.find("name").text] = "active"
-
             else:
                 interface_to_status[i.find("name").text] = "inactive"
 
@@ -67,7 +83,6 @@ class Juniper:
         return interface_to_status
 
     def get_port_actions(self):
-        
         dev = self.initialize_device()
         dev.open()
         filter = '<configuration><ethernet-switching-options/></configuration>'
@@ -80,27 +95,22 @@ class Juniper:
 
         interface_to_status = {}
         for i in ethernet_options_interfaces:
-
             if i.find('mac-limit/action') is not None:
                 print(i.find('name').text)
 
     def activate_port_security(self, port_list):
-
         print("Connecting to : {}".format(self.host_name))
         device = self.initialize_device().open()
         cu = Config(device)
 
         for port in port_list:
-
             try:
                 print("Activating security on port {}".format(port))
                 set_command = 'activate ethernet-switching-options secure-access-port interface {}'.format(port)
-
                 cu.load(set_command, format='set')
 
                 if(cu.commit_check()):
                     cu.commit()
-
             except Exception as e:
                 print(e)
                 pass
@@ -108,21 +118,27 @@ class Juniper:
         device.close()
         
     def change_password(self, user, password):
+        """Will hash inputted password for new user login for Juniper instance.
+
+        :param user: New desired username for login
+        :type user: str
+        :param password: New desired password for login
+        :type password: str 
+        """
 
         device = self.initialize_device().open()
         cu = Config(dev)
-
         set_command = 'set system login user {} authentication encrypted-password {}'.format(user, password)
-
         cu.load(set_command, format='set')
         cu.commit()
-
         device.close()
 
     def set_rescue_config(self):
+        """Runs the :code:`request system configuration rescue save` command for the current Juniper instance
+        """
+
         dev = self.initialize_device()
         ss = StartShell(dev)
-
         ss.open()
         cmd = ss.run('cli -c "request system configuration rescue save"')
         ss.close()

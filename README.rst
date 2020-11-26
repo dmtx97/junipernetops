@@ -1,4 +1,4 @@
-JuniperNetOps : Automation Module For Juniper Network Switches
+NetOpsAuto : Automation Module For Network Switches
 ==============================================================
 
 WIP
