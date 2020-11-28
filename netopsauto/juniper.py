@@ -59,8 +59,18 @@ class Juniper:
 
         return enabled_interfaces
 
-    def get_ethernet_switching_options(self):
-        # Function returns ports with ethernet-switching-options and their status (active or inactive)
+    def get_secure_access_port_status(self, port = None):
+        """Generates dictionary of ports and their secure-access-port status for the given Juniper instance
+
+        :param port: Port number for the current Juniper instance
+        :type port: int, optional
+
+
+        
+        :return: Dictionary of ports with and their ethernet-switching-options status (active or inactive). 
+        :rtype: dict
+        """
+
         dev = self.initialize_device()
         dev.open()
         filter = '<configuration><ethernet-switching-options/></configuration>'
@@ -72,6 +82,8 @@ class Juniper:
         ethernet_options_interfaces = dom.findall('ethernet-switching-options/secure-access-port/interface')
 
         interface_to_status = {}
+        
+        
         for i in ethernet_options_interfaces:
             if 'inactive' not in i.attrib.keys():
                 interface_to_status[i.find("name").text] = "active"
@@ -81,6 +93,7 @@ class Juniper:
         dev.close()
 
         return interface_to_status
+
 
     def get_port_actions(self):
         dev = self.initialize_device()
