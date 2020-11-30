@@ -60,15 +60,19 @@ class Juniper:
         return enabled_interfaces
 
     def get_secure_access_port_status(self, port = None):
-        """Generates dictionary of ports and their secure-access-port status for the given Juniper instance
+        """Generates dictionary of ports and their secure-access-port status for the given Juniper instance. 
+        
+        
 
-        :param port: Port number for the current Juniper instance
+        :param port: Port number (0-47 or 0-23) for the current Juniper instance
         :type port: int, optional
 
-
-        
         :return: Dictionary of ports with and their ethernet-switching-options status (active or inactive). 
         :rtype: dict
+        
+        .. note::
+            If the **port** parameter is filled, the function will return the status of the individual port.
+        
         """
 
         dev = self.initialize_device()
@@ -79,21 +83,26 @@ class Juniper:
         xml = etree.tostring(data, encoding='unicode', pretty_print=True)
         dom = ElementTree.fromstring(xml)
 
-        ethernet_options_interfaces = dom.findall('ethernet-switching-options/secure-access-port/interface')
+        ethernet_status = dom.findall('ethernet-switching-options/secure-access-port/interface')
 
         interface_to_status = {}
-        
-        
-        for i in ethernet_options_interfaces:
-            if 'inactive' not in i.attrib.keys():
-                interface_to_status[i.find("name").text] = "active"
-            else:
-                interface_to_status[i.find("name").text] = "inactive"
-
-        dev.close()
+        if port is not None:
+            query_port = 'ge-0/0/{}.0'.format(port)
+            for i in ethernet_status:
+                if i.find("name").text == query_port:
+                    if 'inactive' not in i.attrib.keys():
+                        interface_to_status[query_port] = 'active'
+                    else:
+                        interface_to_status[query_port] = 'inactive'
+                    break
+        else:
+            for i in ethernet_status:
+                if 'inactive' not in i.attrib.keys():
+                    interface_to_status[i.find("name").text] = "active"
+                else:
+                    interface_to_status[i.find("name").text] = "inactive"
 
         return interface_to_status
-
 
     def get_port_actions(self):
         dev = self.initialize_device()
