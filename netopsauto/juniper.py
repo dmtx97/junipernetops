@@ -4,9 +4,6 @@ from jnpr.junos import Device
 from paramiko import AuthenticationException
 from lxml import etree
 from xml.etree import ElementTree
-import json
-import sys
-import re
 
 class Juniper:
     """A class which implements Juniper Networks PyEZ module.
@@ -41,7 +38,10 @@ class Juniper:
         return dev
 
     def get_enabled_interfaces(self):
-        # Function returns list of Physical Interfaces which read 'Enabled, Physical link is Down'
+        """ 
+        :return: list of Physical Interfaces which read :code:`Enabled, Physical link is Down`
+        :rtype: list
+        """
         dev = self.initialize_device()
         ss = StartShell(dev)
         ss.open()
@@ -61,8 +61,6 @@ class Juniper:
 
     def get_secure_access_port_status(self, port = None):
         """Generates dictionary of ports and their secure-access-port status for the given Juniper instance. 
-        
-        
 
         :param port: Port number (0-47 or 0-23) for the current Juniper instance
         :type port: int, optional
@@ -87,13 +85,13 @@ class Juniper:
 
         interface_to_status = {}
         if port is not None:
-            query_port = 'ge-0/0/{}.0'.format(port)
+            port_query = 'ge-0/0/{}.0'.format(port)
             for i in ethernet_status:
-                if i.find("name").text == query_port:
+                if i.find("name").text == port_query:
                     if 'inactive' not in i.attrib.keys():
-                        interface_to_status[query_port] = 'active'
+                        interface_to_status[port_query] = 'active'
                     else:
-                        interface_to_status[query_port] = 'inactive'
+                        interface_to_status[port_query] = 'inactive'
                     break
         else:
             for i in ethernet_status:
@@ -104,23 +102,13 @@ class Juniper:
 
         return interface_to_status
 
-    def get_port_actions(self):
-        dev = self.initialize_device()
-        dev.open()
-        filter = '<configuration><ethernet-switching-options/></configuration>'
-        
-        data = dev.rpc.get_config(filter_xml=filter)
-        xml = etree.tostring(data, encoding='unicode', pretty_print=True)
-        dom = ElementTree.fromstring(xml)
-
-        ethernet_options_interfaces = dom.findall('ethernet-switching-options/secure-access-port/interface')
-
-        interface_to_status = {}
-        for i in ethernet_options_interfaces:
-            if i.find('mac-limit/action') is not None:
-                print(i.find('name').text)
-
     def activate_port_security(self, port_list):
+        """Activates `secure-access-port <https://www.juniper.net/documentation/en_US/junos/topics/reference/configuration-statement/secure-access-port-port-security.html>`_ option for the list of specified ports for the current Juniper instance.
+        
+        :param port_list: List of desired ports to have secure-access-port enabled
+        :type port_list: list
+        
+        """
         print("Connecting to : {}".format(self.host_name))
         device = self.initialize_device().open()
         cu = Config(device)
@@ -133,6 +121,7 @@ class Juniper:
 
                 if(cu.commit_check()):
                     cu.commit()
+
             except Exception as e:
                 print(e)
                 pass
@@ -140,7 +129,7 @@ class Juniper:
         device.close()
         
     def change_password(self, user, password):
-        """Will hash inputted password for new user login for Juniper instance.
+        """Will hash inputted password for new user login for the current Juniper instance.
 
         :param user: New desired username for login
         :type user: str
@@ -148,17 +137,24 @@ class Juniper:
         :type password: str 
         """
 
+        print("Connecting to : {}".format(self.host_name))
         device = self.initialize_device().open()
         cu = Config(dev)
+        print("Changing password...")
         set_command = 'set system login user {} authentication encrypted-password {}'.format(user, password)
         cu.load(set_command, format='set')
-        cu.commit()
+        
+        if(cu.commit_check()):
+            cu.commit()
+            print("Password has been changed")
+        else:
+            print("There is an issue changing the password on this device. Please try again.")
+        
         device.close()
 
     def set_rescue_config(self):
         """Runs the :code:`request system configuration rescue save` command for the current Juniper instance
         """
-
         dev = self.initialize_device()
         ss = StartShell(dev)
         ss.open()
