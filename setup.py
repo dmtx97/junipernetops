@@ -12,7 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type = 'text/markdown',
     install_requires=['junos-eznc', 'bcrypt', 'cryptography', 'textfsm'],     
-    url='https://github.com/dmtx97/junipernetops',
+    url='https://github.com/dmtx97/netopsauto',
     author='Daniel Mendez',
     author_email='dmtx97@gmail.com'
 )
