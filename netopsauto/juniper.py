@@ -158,5 +158,6 @@ class Juniper:
         dev = self.initialize_device()
         ss = StartShell(dev)
         ss.open()
+        print("Setting rescue configuration for {}".format(self.host_name))
         cmd = ss.run('cli -c "request system configuration rescue save"')
         ss.close()

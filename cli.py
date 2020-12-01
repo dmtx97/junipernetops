@@ -65,11 +65,17 @@ def activate_security():
                 sw = Juniper(building, address, secrets.username, secrets.password)
                 sw.activate_port_security(ports)
 
+def set_recue():
+    swlist = switches_to_list()
+
+    for sw in swlist:
+        sw.set_rescue_config()
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    FUNCTIONMAP = {'outputaudit' : output_audit, 'activatesecurity' : activate_security}
+    FUNCTIONMAP = {'outputaudit' : output_audit, 'activatesecurity' : activate_security, 'listswitches' : switches_to_list, 'setrescue' : set_recue}
     
     parser.add_argument('command', choices=FUNCTIONMAP.keys())
 
