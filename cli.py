@@ -1,5 +1,6 @@
 # from junipernetops.juniper import Juniper
 from netopsauto.juniper import Juniper
+import secrets
 import json
 import argparse
 import sys
@@ -18,7 +19,7 @@ def audit_interfaces(switch, enabled_interfaces, interface_to_status):
 
 
 def switches_to_list():
-    SKIPPED_BUILDINGS = ['Townhomes', 'Horner Ballpark',]
+    SKIPPED_BUILDINGS = ['Townhomes', 'Horner Ballpark']
 
     switches = []
     with open('./data/input/switches.json', 'r') as f:
@@ -26,7 +27,7 @@ def switches_to_list():
     
         for key in data:
             for value in data[key]:
-                if value['host_name'] not in SKIPPED_BUILDINGS:
+                if key not in SKIPPED_BUILDINGS:
                     switch = Juniper(value['host_name'], value['host_address'], secrets.username, secrets.password)
                     switches.append(switch)
 
@@ -39,13 +40,13 @@ def output_audit():
     for sw in swlist:
         try:
             enabled_interfaces = sw.get_enabled_interfaces()
-            interface_to_status = sw.get_ethernet_switching_options()
+            interface_to_status = sw.get_secure_access_port_status()
             print("Scanning {} for port security".format(sw.host_name))
             output_json[sw.host_name] = {}
             output_json[sw.host_name]['ipaddress'] = sw.host_address
             output_json[sw.host_name]['ports'] = audit_interfaces(sw, enabled_interfaces, interface_to_status)  
-        except:
-            print("Could Not Connect To Device")
+        except Exception as e:
+            print("Could Not Connect To Device: {}".format(e))
             pass
 
     # filename = "./data/output/port-security-audit-{}.json".format(datetime.now().strftime("%m-%d-%Y"))
@@ -64,7 +65,7 @@ def activate_security():
                 sw = Juniper(building, address, secrets.username, secrets.password)
                 sw.activate_port_security(ports)
 
-def main():
+if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
@@ -76,5 +77,4 @@ def main():
 
     func = FUNCTIONMAP[args.command]
 
-if __name__ == "__main__":
-    sys.exit(func())
+    func()
