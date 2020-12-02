@@ -25,9 +25,9 @@ def switches_to_list():
     with open('./data/input/switches.json', 'r') as f:
         data = json.loads(f.read())
     
-        for key in data:
-            for value in data[key]:
-                if key not in SKIPPED_BUILDINGS:
+        for building in data:
+            for value in data[building]:
+                if building not in SKIPPED_BUILDINGS:
                     switch = Juniper(value['host_name'], value['host_address'], secrets.username, secrets.password)
                     switches.append(switch)
 

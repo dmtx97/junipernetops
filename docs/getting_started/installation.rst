@@ -25,3 +25,16 @@ To install the package, run the :code:`setup.py`:
 .. code-block:: sh
 
    pip install ./
+
+.. note::
+   If you encounter any errors installing through pip, update by running :code:`python -m pip install --upgrade pip` and try again.
+
+
+Installing Through GitHub
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can also directly clone a copy of the repository using git, like so:
+
+.. code-block:: sh
+
+   pip install --upgrade git+https://github.com/dmtx97/netopsauto
