@@ -11,7 +11,7 @@ setup(
     description='Useful tools to automate your network',
     long_description=long_description,
     long_description_content_type = 'text/markdown',
-    install_requires=['junos-eznc', 'bcrypt', 'cryptography', 'textfsm'],     
+    install_requires=['junos-eznc==2.5.4', 'netaddr==0.8.0', 'lxml==4.6.2', 'bcrypt==3.2.0', 'cryptography', 'textfsm', 'yamlordereddictloader==0.4.0', 'ncclient==0.6.9', 'scp==0.13.3', 'pyserial==3.5', 'transitions==0.8.5'],     
     url='https://github.com/dmtx97/netopsauto',
     author='Daniel Mendez',
     author_email='dmtx97@gmail.com'
