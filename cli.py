@@ -19,7 +19,9 @@ def audit_interfaces(switch, enabled_interfaces, interface_to_status):
 
 
 def switches_to_list():
-    SKIPPED_BUILDINGS = ['Townhomes', 'Horner Ballpark']
+
+    # Input the buildings you would like ommitted ex: ['Townhomes', 'Horner Ballpark']
+    SKIPPED_BUILDINGS = []
 
     switches = []
     with open('./data/input/switches.json', 'r') as f:

@@ -44,3 +44,8 @@ You can also directly clone a copy of the repository using git, like so:
 .. code-block:: sh
 
    pip install --upgrade git+https://github.com/dmtx97/netopsauto
+
+Usage
+^^^^^
+
+The :code:`cli.py` script provides an example implementation of the module with command line arguments. It is also recommended to create a switch schema similar to the one provided in `data/input/switches-example.json <https://github.com/dmtx97/netopsauto/blob/master/data/input/switches-example.json>`_. 
