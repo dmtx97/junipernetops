@@ -1,6 +1,15 @@
 NetOpsAuto : Automation Module For Network Switches
 ==============================================================
 
+NetOpsAuto (netopsauto) is a lightweight automation package for Juniper switches using the `Juniper PyEZ <https://github.com/Juniper/py-junos-eznc>`_ Python library.
+
+Expansion for Aruba Network Switch automation is a possiblility in the future.
+
+Documentation
+^^^^^^^^^^^^^
+
+NetOpsAuto's documentation is located at https://netopsauto.readthedocs.io/
+
 Installation
 ^^^^^^^^^^^^
    
@@ -25,9 +34,7 @@ To install the package, run the :code:`setup.py`:
 
    pip install ./
 
-.. note::
-   If you encounter any errors installing through pip, update by running :code:`python -m pip install --upgrade pip` and try again.
-
+If you encounter any errors installing through pip, update by running :code:`python -m pip install --upgrade pip` and try again.
 
 Installing Through GitHub
 ^^^^^^^^^^^^^^^^^^^^^^^^^

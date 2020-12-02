@@ -26,7 +26,8 @@ To create a **Juniper** instance, you need:
 3. username
 4. password
 
-After obtaining this information, we can instantiate a Juniper instance to directly its methods. For example:
+After obtaining this information, we can instantiate a Juniper instance to directly use its methods. For example:
 
 .. literalinclude:: example1.py
    :language: python
+
