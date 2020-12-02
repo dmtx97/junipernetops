@@ -14,3 +14,19 @@ You will need a bit of Python programming knowledge to use this library. If you 
 Juniper Knowledge
 ^^^^^^^^^^^^^^^^^^^^
 The Juniper instance heavily utilizes the `Juniper PyEz <https://junos-pyez.readthedocs.io/en/2.5.1/>`_ Python Library so it is important to get yourself familiar with some of its features.
+
+
+Obtaining A Juniper Instance
+----------------------------
+
+To create a **Juniper** instance, you need:
+
+1. host name
+2. host addresss
+3. username
+4. password
+
+After obtaining this information, we can instantiate a Juniper instance to directly its methods. For example:
+
+.. literalinclude:: example1.py
+   :language: python
