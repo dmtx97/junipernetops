@@ -113,7 +113,7 @@ If you cloned the repository, the `cli.py` script provides an example implementa
 
 - [X] Automate Rescue Configurations
 
-- [ ] Add SNMP Automation Script
+- [X] Add SNMP Automation Script
 
 - [ ] Complete password change function
 

@@ -122,12 +122,12 @@ class Juniper:
                 set_command = 'activate ethernet-switching-options secure-access-port interface {}'.format(port)
                 cu.load(set_command, format='set')
 
-                if(cu.commit_check()):
-                    cu.commit()
-
             except Exception as e:
                 print(e)
                 pass
+
+        if(cu.commit_check()):
+            cu.commit()
 
         device.close()
         
@@ -165,3 +165,79 @@ class Juniper:
         print("Setting rescue configuration for {}".format(self.host_name))
         cmd = ss.run('cli -c "request system configuration rescue save"')
         ss.close()
+
+    def set_snmp(self, community, trap_group, address):
+        """Will set a new snmp address for the given snmp group.
+        :param community: SNMP community
+        :type community: str
+        :param trap_group: SNMP trap group
+        :type trap_group: str
+        
+        :param address: SNMP address
+        :type password: str
+        """
+        dev = self.initialize_device()
+        dev.open()
+        filter = '<configuration><snmp/></configuration>'
+        
+        data = dev.rpc.get_config(filter_xml=filter)
+        xml = etree.tostring(data, encoding='unicode', pretty_print=True)
+        dom = ElementTree.fromstring(xml)
+        snmp_community = dom.findall('snmp/community/name')
+        snmp_trap = dom.findall('snmp/trap-group/name')
+        cu = Config(dev)
+
+        for com in snmp_community:
+            if com.text == community:
+                print("Setting snmp community {} for {}".format(community, self.host_name))
+                set_command = 'set snmp community {} clients {}'.format(community, address)
+                cu.load(set_command, format='set')
+                break
+        for trap in snmp_trap:
+            if trap.text == trap_group:
+                print("Setting snmp trap-group {} for {}".format(trap_group, self.host_name))
+                set_command = 'set snmp trap-group {} targets {}'.format(trap_group, address)
+                cu.load(set_command, format='set')
+                break
+        
+        print("Committing changes...")
+        if(cu.commit_check()):
+            cu.commit()
+
+    def delete_snmp(self, community, trap_group, address):
+        """Will delete a new snmp address for the given snmp group.
+        :param community: SNMP community
+        :type community: str
+        :param trap_group: SNMP trap group
+        :type trap_group: str
+        
+        :param address: SNMP address
+        :type password: str
+        """
+        dev = self.initialize_device()
+        dev.open()
+        filter = '<configuration><snmp/></configuration>'
+        
+        data = dev.rpc.get_config(filter_xml=filter)
+        xml = etree.tostring(data, encoding='unicode', pretty_print=True)
+        dom = ElementTree.fromstring(xml)
+        snmp_community = dom.findall('snmp/community/name')
+        snmp_trap = dom.findall('snmp/trap-group/name')
+        cu = Config(dev)
+
+        for com in snmp_community:
+            if com.text == community:
+                print("Deleting snmp community {} for {}".format(community, self.host_name))
+                set_command = 'delete snmp community {} clients {}'.format(community, address)
+                cu.load(set_command, format='set')
+                break
+        for trap in snmp_trap:
+            if trap.text == trap_group:
+                print("Deleting snmp trap-group {} for {}".format(trap_group, self.host_name))
+                set_command = 'delete snmp trap-group {} targets {}'.format(trap_group, address)
+                cu.load(set_command, format='set')
+                break
+        
+        print("Committing changes...")
+        if(cu.commit_check()):
+            cu.commit()

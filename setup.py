@@ -6,7 +6,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name = 'netopsauto',
-    version = '0.3',
+    version = '0.4',
     packages=find_packages(),
     description='Useful tools to automate your network',
     long_description=long_description,

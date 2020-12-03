@@ -51,8 +51,8 @@ def output_audit():
             print("Could Not Connect To Device: {}".format(e))
             pass
 
-    # filename = "./data/output/port-security-audit-{}.json".format(datetime.now().strftime("%m-%d-%Y"))
-    filename = "./data/output/port-security-audit.json"
+    filename = "./data/output/port-security-audit-{}.json".format(datetime.now().strftime("%m-%d-%Y"))
+    # filename = "./data/output/port-security-audit.json"
     with open(filename, 'w') as f:
         json.dump(output_json, f, indent=4)
 
