@@ -4,3 +4,5 @@ secrets.py
 docs/_build
 data/input/switches.json
 data/output/port-security-audit.json
+*.egg-info
+dist

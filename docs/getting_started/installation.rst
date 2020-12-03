@@ -5,9 +5,14 @@ Installation
    :maxdepth: 1
 
    
-NetOpsAuto suppoorts Python 3.85+. The recommended way to clone the `git repository <https://github.com/dmtx97/netopsauto.git>`_ and run the setup.py in a new virtual environment.
+NetOpsAuto suppoorts Python 3.85+. The recommended way of installing the module is via pip:
+
+.. code-block:: sh
+
+   pip install netopsauto
 
 
+You can also clone the `git repository <https://github.com/dmtx97/netopsauto.git>`_ and run the setup.py in a new virtual environment.
 Create new virtual environment within the netopsauto repository:
 
 .. code-block:: sh

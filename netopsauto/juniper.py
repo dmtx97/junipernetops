@@ -8,14 +8,17 @@ from xml.etree import ElementTree
 class Juniper:
     """A class which implements Juniper Networks PyEZ module.
 
-    Initializes new instance of a Juniper device.
+    Initializes a new instance of a Juniper device.
 
     :param host_name: host name for Juniper device
     :type host_name: str
+    
     :param host_address: host address for Juniper device
     :type host_address: str
+    
     :param user: username for Juniper login
     :type user: str
+    
     :param password: password for Juniper login
     :type password: str
     
@@ -133,6 +136,7 @@ class Juniper:
 
         :param user: New desired username for login
         :type user: str
+        
         :param password: New desired password for login
         :type password: str 
         """
