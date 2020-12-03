@@ -168,8 +168,10 @@ class Juniper:
 
     def set_snmp(self, community, trap_group, address):
         """Will set a new snmp address for the given snmp group.
+        
         :param community: SNMP community
         :type community: str
+        
         :param trap_group: SNMP trap group
         :type trap_group: str
         
@@ -206,8 +208,10 @@ class Juniper:
 
     def delete_snmp(self, community, trap_group, address):
         """Will delete a new snmp address for the given snmp group.
+        
         :param community: SNMP community
         :type community: str
+        
         :param trap_group: SNMP trap group
         :type trap_group: str
         
