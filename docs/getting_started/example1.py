@@ -7,7 +7,11 @@ switch = Juniper("host_name", "host_address", "user", "password")
 
 dev = switch.initialize_device()
 
+dev.open()
+
 pprint(dev.facts)
+
+dev.close()
 
 # prints detailed Juniper device information 
 # https://www.juniper.net/documentation/en_US/junos-pyez/topics/task/program/junos-pyez-program-device-connecting.html
