@@ -22,6 +22,8 @@ project = 'NetOpsAuto'
 copyright = '2020, Daniel Mendez'
 author = 'Daniel Mendez'
 
+master_doc = 'index'
+
 
 # -- General configuration ---------------------------------------------------
 
