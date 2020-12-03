@@ -176,7 +176,7 @@ class Juniper:
         :type trap_group: str
         
         :param address: SNMP address
-        :type password: str
+        :type address: str
         """
         dev = self.initialize_device()
         dev.open()
@@ -216,7 +216,7 @@ class Juniper:
         :type trap_group: str
         
         :param address: SNMP address
-        :type password: str
+        :type address: str
         """
         dev = self.initialize_device()
         dev.open()
