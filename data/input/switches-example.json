@@ -2,17 +2,20 @@
     "Building 1": [
         {
             "host_address": "ipaddress",
-            "host_name": "hostname"
+            "host_name": "hostname",
+            "switch_type": "access"
         },
         {
             "host_address": "ipaddress",
-            "host_name": "hostname"
+            "host_name": "hostname",
+            "switch_type": "distro"
         }
     ],
     "Building 2": [
         {
             "host_address": "ipaddress",
-            "host_name": "hostname"
+            "host_name": "hostname",
+            "switch_type": "distro"
         }
     ]
 }
