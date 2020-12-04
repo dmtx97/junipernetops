@@ -167,7 +167,7 @@ class Juniper:
         ss.close()
 
     def set_snmp(self, community, trap_group, address):
-        """Will set a new snmp address for the given snmp group.
+        """Will set a new snmp address for the given community and trap group.
         
         :param community: SNMP community
         :type community: str
@@ -207,7 +207,7 @@ class Juniper:
             cu.commit()
 
     def delete_snmp(self, community, trap_group, address):
-        """Will delete a new snmp address for the given snmp group.
+        """Will delete an snmp address for the given community and trap group.
         
         :param community: SNMP community
         :type community: str
