@@ -1,6 +1,6 @@
 # from junipernetops.juniper import Juniper
 from netopsauto.juniper import Juniper
-import datetime
+from datetime import datetime
 import secrets
 import json
 import argparse
